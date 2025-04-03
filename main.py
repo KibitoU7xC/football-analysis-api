@@ -106,7 +106,8 @@ async def get_chart(job_id: str, player_id: int):
 def notify_colab_worker(job_id: str):
     """Notify Colab worker about new job"""
     try:
-        response = requests.post("https://366c-34-142-166-3.ngrok-free.app",
+        response = requests.post(
+            f"{COLAB_WORKER_URL}/process",
             json={"job_id": job_id},
             headers={"Authorization": f"Bearer {API_KEY}"}
         )
