@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: football-analysis
+    runtime: docker
+    env: python
+    buildCommand: docker build -t football-analysis .
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
