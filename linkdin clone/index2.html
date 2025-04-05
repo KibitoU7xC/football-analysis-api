@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Content Sharing</title>
+    <style>
+        .post {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Share Your Thoughts</h1>
+    <textarea id="postContent" rows="4" cols="50"></textarea><br>
+    <button onclick="submitPost()">Post</button>
+
+    <div id="posts">
+        </div>
+
+    <script>
+        async function submitPost() {
+            const content = document.getElementById('postContent').value;
+            if (content) {
+                const response = await fetch('/create_post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: content })
+                });
+
+                if (response.ok) {
+                    document.getElementById('postContent').value = ''; // Clear textarea
+                    loadPosts(); // Reload posts
+                } else {
+                    alert('Failed to create post.');
+                }
+            }
+        }
+
+        async function loadPosts() {
+          const response = await fetch('/get_posts');
+          const posts = await response.json();
+          const postsDiv = document.getElementById('posts');
+          postsDiv.innerHTML = ''; // Clear existing posts
+
+          posts.forEach(post => {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post';
+            postDiv.innerHTML = `<p>${post.content}</p><p><em>${post.timestamp}</em></p>`;
+            postsDiv.appendChild(postDiv);
+          });
+        }
+        loadPosts(); // Load posts on page load
+    </script>
+</body>
+</html>
+
+----------
+<div class="post">
+    <div class="post-author">
+        <img src="user-4.png">
+        <div>
+            <h1>bran james</h1>
+            <small>right back at fc santros-C</small>
+            <small>7hr age</small>
+        </div>
+
+    </div>
+    <p> Football enthusiast. Analyzing plays and celebrating wins.</p>
+    <img src="r.png" width="100%">
+    <div class="post-stats">
+        <div>
+            <img src="thumbsup.png">
+            <img src="love.png">
+            <img src="clap.png">
+            <span class="liked-users">Ronaldo and 69 others</span>
+        </div>
+        <div>
+            <span>2 comments:;46 shares</span>
+        </div>
+
+    </div>
+    <div class="postactivity">
+        <div>
+            <img src="user-1.png" class="post-activity-user-icon">
+            <img src="down-arrow.png" class="post-activity-arrow-icon">
+
+        </div>
+        <div class="post-activity-link">
+            <img src="like.png">
+            <span>like</span>
+        </div>
+        <div class="post-activity-link">
+            <img src="comment.png">
+            <span>comment</span>
+        </div>
+        <div class="post-activity-link">
+            <img src="share.png">
+            <span>share</span>
+        </div>
+        <div class="post-activity-link">
+            <img src="send.png">
+            <span>send</span>
+        </div>
+    </div>
+   </div> 
+</div>
