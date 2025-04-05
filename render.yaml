@@ -2,6 +2,11 @@ services:
   - type: web
     name: football-analysis
     runtime: docker
-    env: python
-    buildCommand: docker build -t football-analysis .
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
+    plan: free  # or 'starter', 'pro' if using paid plan
+    envVars:
+      - key: API_KEY
+        value: 7375db0fbea64486d088812d460e083daa07307b67ee61758e2b4cdadbc905c1
+      - key: COLAB_WORKER_URL
+        value: https://your-colab-worker-url
+    region: oregon  # or frankfurt, singapore etc. (optional)
+    dockerfilePath: ./Dockerfile
